@@ -7,25 +7,28 @@ export const getProducts = async (req, res) => {
     const response = await prisma.product.findMany();
     res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({ msg: error.message });
+    res.status(500).json({ mssg: error.message });
   }
 };
 
 export const getProductById = async (req, res) => {
   try {
+    const productId = parseInt(req.params.id);
+
     const response = await prisma.product.findUnique({
       where: {
-        id: Number(req.params.id),
+        id: productId,
       },
     });
     res.status(200).json(response);
   } catch (error) {
-    res.status(404).json({ msg: error.message });
+    res.status(404).json({ mssg: error.message });
   }
 };
 
 export const createProduct = async (req, res) => {
   const { name, price } = req.body;
+
   try {
     const product = await prisma.product.create({
       data: {
@@ -35,37 +38,41 @@ export const createProduct = async (req, res) => {
     });
     res.status(201).json(product);
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    res.status(500).json({ mssg: error.message });
   }
 };
 
 export const updateProduct = async (req, res) => {
   const { name, price } = req.body;
+  const productId = parseInt(req.params.id);
+
   try {
-    const product = await prisma.product.update({
+    const updatedProduct = await prisma.product.update({
       where: {
-        id: Number(req.params.id),
+        id: productId,
       },
       data: {
         name: name,
         price: price,
       },
     });
-    res.status(200).json(product);
+    res.status(200).json(updatedProduct);
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    res.status(500).json({ mssg: error.message });
   }
 };
 
 export const deleteProduct = async (req, res) => {
+  const productId = parseInt(req.params.id);
+
   try {
     const product = await prisma.product.delete({
       where: {
-        id: Number(req.params.id),
+        id: productId,
       },
     });
     res.status(200).json(product);
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    res.status(500).json({ mssg: error.message });
   }
 };
