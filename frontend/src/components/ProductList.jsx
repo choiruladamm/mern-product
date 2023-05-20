@@ -1,30 +1,25 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import axios from "axios";
-import useSWR from "swr";
-import { MutatingDots } from "react-loader-spinner";
+import useSWR, { useSWRConfig } from "swr";
+import Loader from "./Loader";
 
 const ProductList = () => {
+  const { mutate } = useSWRConfig();
+
   const fetcher = async () => {
     const response = await axios.get("http://localhost:5000/api/products");
     return response.data;
   };
 
   const { data } = useSWR("/api/products", fetcher);
-  if (!data)
-    return (
-      <div className="grid h-screen place-items-center">
-        <MutatingDots
-          height="100"
-          width="100"
-          color="#202226"
-          secondaryColor="#202226"
-          radius="9.5"
-          ariaLabel="mutating-dots-loading"
-          visible={true}
-        />
-      </div>
-    );
+
+  if (!data) return <Loader />;
+
+  const deleteProduct = async (productId) => {
+    await axios.delete(`http://localhost:5000/api/products/${productId}`);
+    mutate("/api/products");
+  };
 
   return (
     <div className="mt-5">
@@ -57,12 +52,11 @@ const ProductList = () => {
                     </td>
                     <td className="px-6 py-3">{product.price}</td>
                     <td className="px-1 py-3 text-center">
-                      <Link to={`/products/${product.id}`}>
-                        <Button
-                          title="Delete"
-                          styles={`bg-red-500 hover:bg-red-600 focus:ring-red-300 py-[6px] px-4 mr-1`}
-                        />
-                      </Link>
+                      <Button
+                        onClick={() => deleteProduct(product.id)}
+                        title="Delete"
+                        styles={`bg-red-500 hover:bg-red-600 focus:ring-red-300 py-[6px] px-4 mr-1`}
+                      />
                       <Link to={`/products/${product.id}`}>
                         <Button
                           title="Update"
