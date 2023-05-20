@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Button from "./Button";
 import axios from "axios";
 import useSWR from "swr";
+import { MutatingDots } from "react-loader-spinner";
 
 const ProductList = () => {
   const fetcher = async () => {
@@ -10,7 +11,20 @@ const ProductList = () => {
   };
 
   const { data } = useSWR("/api/products", fetcher);
-  if (!data) return <h2>Loading...</h2>;
+  if (!data)
+    return (
+      <div className="grid h-screen place-items-center">
+        <MutatingDots
+          height="100"
+          width="100"
+          color="#202226"
+          secondaryColor="#202226"
+          radius="9.5"
+          ariaLabel="mutating-dots-loading"
+          visible={true}
+        />
+      </div>
+    );
 
   return (
     <div className="mt-5">
