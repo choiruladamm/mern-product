@@ -19,6 +19,7 @@ const ProductList = () => {
   const deleteProduct = async (productId) => {
     await axios.delete(`http://localhost:5000/api/products/${productId}`);
     mutate("/api/products");
+    alert("Delete Succes");
   };
 
   return (
@@ -39,7 +40,7 @@ const ProductList = () => {
                 <tr>
                   <th className="px-1 py-3 text-center">No</th>
                   <th className="px-6 py-3 ">Product Name</th>
-                  <th className="px-6 py-3 ">Price</th>
+                  <th className="px-6 py-3 text-center">Price</th>
                   <th className="px-1 py-3 text-center">Action</th>
                 </tr>
               </thead>
@@ -50,7 +51,7 @@ const ProductList = () => {
                     <td className="px-6 py-3 font-medium text-gray-900">
                       {product.name}
                     </td>
-                    <td className="px-6 py-3">{product.price}</td>
+                    <td className="px-6 py-3 text-center">{product.price}</td>
                     <td className="px-1 py-3 text-center">
                       <Button
                         onClick={() => deleteProduct(product.id)}
