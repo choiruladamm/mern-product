@@ -31,7 +31,7 @@ const ProductList = () => {
       </div>
       <div className="flex flex-col mx-[10rem]">
         <div className="w-full ">
-          <Link to="/add">
+          <Link to="/dashboard/add">
             <Button title="Add New" />
           </Link>
           <div className="relative mt-3 rounded-lg shadow">
@@ -58,7 +58,7 @@ const ProductList = () => {
                         title="Delete"
                         styles={`bg-red-500 hover:bg-red-600 focus:ring-red-300 py-[6px] px-4 mr-1`}
                       />
-                      <Link to={`/products/${product.id}`}>
+                      <Link to={`/dashboard/products/${product.id}`}>
                         <Button
                           title="Update"
                           styles={`bg-green-500 hover:bg-green-600 focus:ring-green-300 py-[6px] px-4 ml-1`}
